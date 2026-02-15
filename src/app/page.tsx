@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -127,6 +129,7 @@ const TESTIMONIALS = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -134,7 +137,7 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    router.push(`/membership?name=${encodeURIComponent(name)}`);
   };
 
   return (
@@ -156,12 +159,12 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <a
-            href="#signup"
+          <Link
+            href="/signup"
             className="hidden rounded-full bg-lime px-6 py-2 text-sm font-semibold text-black transition-all hover:bg-lime-dark md:block"
           >
             Join Now
-          </a>
+          </Link>
           <button
             className="text-foreground md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -189,7 +192,7 @@ export default function Home() {
               </a>
             ))}
             <a
-              href="#signup"
+              href="/signup"
               className="mt-2 inline-block rounded-full bg-lime px-6 py-2 text-sm font-semibold text-black"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -216,12 +219,12 @@ export default function Home() {
             believes in the power of self-care.
           </p>
           <div className="animate-fade-in-up-delay-2 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <a
-              href="#signup"
+            <Link
+              href="/signup"
               className="animate-pulse-glow rounded-full bg-lime px-10 py-4 text-base font-bold text-black transition-all hover:bg-lime-dark"
             >
               Start Your Journey
-            </a>
+            </Link>
             <a
               href="#features"
               className="rounded-full border border-white/20 px-10 py-4 text-base font-medium text-foreground transition-all hover:border-lime hover:text-lime"
@@ -334,8 +337,8 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#signup"
+                <Link
+                  href="/signup"
                   className={`block rounded-full py-3 text-center text-sm font-bold transition-all ${
                     tier.popular
                       ? "bg-lime text-black hover:bg-lime-dark"
@@ -343,7 +346,7 @@ export default function Home() {
                   }`}
                 >
                   {tier.cta}
-                </a>
+                </Link>
               </div>
             ))}
           </div>
