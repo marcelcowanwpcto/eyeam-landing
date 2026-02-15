@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
@@ -7,14 +8,14 @@ import { useState, Suspense } from "react";
 const CATEGORIES = ["All", "Skincare Science", "Meditation", "Nutrition", "Self-Care Rituals"];
 
 const COURSES = [
-  { id: 1, title: "Skincare Science 101", category: "Skincare Science", difficulty: "Beginner", duration: "4 weeks", lessons: 12, progress: 100, description: "Understand the biology of your skin, the science behind active ingredients, and how neuro-cosmetics work.", gradient: "from-lime/30 to-lime/10" },
-  { id: 2, title: "Meditation for Radiance", category: "Meditation", difficulty: "Beginner", duration: "3 weeks", lessons: 9, progress: 60, description: "Learn how daily meditation reduces cortisol, improves skin health, and cultivates inner glow.", gradient: "from-rose/30 to-rose/10" },
-  { id: 3, title: "Advanced Ingredient Decoding", category: "Skincare Science", difficulty: "Advanced", duration: "6 weeks", lessons: 18, progress: 0, description: "Deep dive into peptides, retinoids, AHAs, and how to build the perfect skincare routine.", gradient: "from-warm/30 to-warm/10" },
-  { id: 4, title: "Nutrition for Skin Health", category: "Nutrition", difficulty: "Intermediate", duration: "5 weeks", lessons: 15, progress: 30, description: "Discover the gut-skin connection, anti-inflammatory diets, and supplements that transform your skin.", gradient: "from-muted/30 to-muted/10" },
-  { id: 5, title: "Morning Ritual Mastery", category: "Self-Care Rituals", difficulty: "Beginner", duration: "2 weeks", lessons: 7, progress: 0, description: "Design your perfect morning routine combining skincare, movement, and mindfulness.", gradient: "from-lime/20 to-warm/10" },
-  { id: 6, title: "Breathwork & Beauty", category: "Meditation", difficulty: "Intermediate", duration: "4 weeks", lessons: 12, progress: 0, description: "Advanced breathing techniques that reduce stress, improve circulation, and enhance skin vitality.", gradient: "from-rose/20 to-lime/10" },
-  { id: 7, title: "Holistic Sleep Science", category: "Self-Care Rituals", difficulty: "Intermediate", duration: "3 weeks", lessons: 10, progress: 45, description: "Optimize your sleep for skin repair, hormonal balance, and mental clarity.", gradient: "from-muted/20 to-rose/10" },
-  { id: 8, title: "Plant-Based Beauty Foods", category: "Nutrition", difficulty: "Beginner", duration: "3 weeks", lessons: 9, progress: 0, description: "Learn to nourish your skin from within with antioxidant-rich whole foods and superfoods.", gradient: "from-warm/20 to-lime/10" },
+  { id: 1, title: "Skincare Science 101", category: "Skincare Science", difficulty: "Beginner", duration: "4 weeks", lessons: 12, progress: 100, description: "Understand the biology of your skin, the science behind active ingredients, and how neuro-cosmetics work.", image: "https://eyeamworld.com/cdn/shop/files/4weeksofeverydayuse_32.jpg?v=1769784949&width=600" },
+  { id: 2, title: "Meditation for Radiance", category: "Meditation", difficulty: "Beginner", duration: "3 weeks", lessons: 9, progress: 60, description: "Learn how daily meditation reduces cortisol, improves skin health, and cultivates inner glow.", image: "https://eyeamworld.com/cdn/shop/files/EYEAM-6509-Edit-2.jpg?v=1733503717&width=600" },
+  { id: 3, title: "Advanced Ingredient Decoding", category: "Skincare Science", difficulty: "Advanced", duration: "6 weeks", lessons: 18, progress: 0, description: "Deep dive into peptides, retinoids, AHAs, and how to build the perfect skincare routine.", image: "https://eyeamworld.com/cdn/shop/files/98.jpg?v=1756814110&width=600" },
+  { id: 4, title: "Nutrition for Skin Health", category: "Nutrition", difficulty: "Intermediate", duration: "5 weeks", lessons: 15, progress: 30, description: "Discover the gut-skin connection, anti-inflammatory diets, and supplements that transform your skin.", image: "https://eyeamworld.com/cdn/shop/files/your_healing_toolbox_3.jpg?v=1732894660&width=600" },
+  { id: 5, title: "Morning Ritual Mastery", category: "Self-Care Rituals", difficulty: "Beginner", duration: "2 weeks", lessons: 7, progress: 0, description: "Design your perfect morning routine combining skincare, movement, and mindfulness.", image: "https://eyeamworld.com/cdn/shop/files/Eyeam_Summer_20242407_2128daef-2b28-4692-8d25-00033adf4abe.jpg?v=1732787190&width=600" },
+  { id: 6, title: "Breathwork & Beauty", category: "Meditation", difficulty: "Intermediate", duration: "4 weeks", lessons: 12, progress: 0, description: "Advanced breathing techniques that reduce stress, improve circulation, and enhance skin vitality.", image: "https://eyeamworld.com/cdn/shop/files/your_healing_toolbox.jpg?v=1732893108&width=600" },
+  { id: 7, title: "Holistic Sleep Science", category: "Self-Care Rituals", difficulty: "Intermediate", duration: "3 weeks", lessons: 10, progress: 45, description: "Optimize your sleep for skin repair, hormonal balance, and mental clarity.", image: "https://eyeamworld.com/cdn/shop/files/3_38d65654-ac5d-41d7-a865-ac837629e19b.jpg?v=1736267767&width=600" },
+  { id: 8, title: "Plant-Based Beauty Foods", category: "Nutrition", difficulty: "Beginner", duration: "3 weeks", lessons: 9, progress: 0, description: "Learn to nourish your skin from within with antioxidant-rich whole foods and superfoods.", image: "https://eyeamworld.com/cdn/shop/files/4_550f4fed-4805-4d25-85d3-31dd44715b81.jpg?v=1736267745&width=600" },
 ];
 
 const SAMPLE_LESSONS = [
@@ -60,14 +61,26 @@ function CoursesContent() {
               Back to Courses
             </button>
 
-            <div className={`mb-8 rounded-2xl bg-gradient-to-br ${detail.gradient} p-8 md:p-12`}>
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium">{detail.category}</span>
-                <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium">{detail.difficulty}</span>
-                <span className="rounded-full bg-black/20 px-3 py-1 text-xs font-medium">{detail.duration}</span>
+            <div className="relative mb-8 rounded-2xl overflow-hidden">
+              <div className="relative h-64 md:h-80">
+                <Image
+                  src={detail.image}
+                  alt={detail.title}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
               </div>
-              <h1 className="mb-3 text-3xl font-bold md:text-4xl">{detail.title}</h1>
-              <p className="max-w-2xl text-muted">{detail.description}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <span className="rounded-full bg-black/40 backdrop-blur-sm px-3 py-1 text-xs font-medium">{detail.category}</span>
+                  <span className="rounded-full bg-black/40 backdrop-blur-sm px-3 py-1 text-xs font-medium">{detail.difficulty}</span>
+                  <span className="rounded-full bg-black/40 backdrop-blur-sm px-3 py-1 text-xs font-medium">{detail.duration}</span>
+                </div>
+                <h1 className="mb-3 text-3xl font-bold md:text-4xl">{detail.title}</h1>
+                <p className="max-w-2xl text-muted">{detail.description}</p>
+              </div>
             </div>
 
             {detail.progress > 0 && (
@@ -138,10 +151,14 @@ function CoursesContent() {
                   onClick={() => setSelectedCourse(course.id)}
                   className="group cursor-pointer rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden transition-all hover:border-lime/30 hover:bg-white/[0.04]"
                 >
-                  <div className={`h-32 bg-gradient-to-br ${course.gradient} flex items-center justify-center`}>
-                    <svg className="w-10 h-10 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                    </svg>
+                  <div className="relative h-36 overflow-hidden bg-white/[0.03]">
+                    <Image
+                      src={course.image}
+                      alt={course.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
                   </div>
                   <div className="p-5">
                     <div className="mb-3 flex flex-wrap gap-2">

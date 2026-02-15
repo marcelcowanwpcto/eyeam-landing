@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, Suspense } from "react";
@@ -9,14 +10,14 @@ const CATEGORIES = ["All", "Serums", "Supplements", "Tools", "Gift Sets"];
 const TIER_DISCOUNTS: Record<string, number> = { essential: 5, premium: 15, vip: 25 };
 
 const PRODUCTS = [
-  { id: 1, name: "Neuro-Glow Serum", category: "Serums", price: 68, description: "Neuropeptide-infused vitamin C serum for luminous, youthful skin.", gradient: "from-lime/30 to-lime/10" },
-  { id: 2, name: "Calm Mind Capsules", category: "Supplements", price: 34, description: "Ashwagandha, L-theanine, and magnesium for stress relief and skin clarity.", gradient: "from-rose/30 to-rose/10" },
-  { id: 3, name: "Jade Gua Sha Set", category: "Tools", price: 42, description: "Premium jade stone gua sha with rose quartz roller for facial sculpting.", gradient: "from-warm/30 to-warm/10" },
-  { id: 4, name: "The Ritual Gift Box", category: "Gift Sets", price: 125, description: "Our bestselling serum, candle, face mist, and jade roller in a luxury box.", gradient: "from-muted/30 to-muted/10" },
-  { id: 5, name: "Retinol Renewal Serum", category: "Serums", price: 78, description: "Encapsulated retinol with bakuchiol for gentle yet powerful skin renewal.", gradient: "from-lime/20 to-rose/10" },
-  { id: 6, name: "Collagen Beauty Powder", category: "Supplements", price: 45, description: "Marine collagen peptides with hyaluronic acid and biotin for skin, hair, and nails.", gradient: "from-rose/20 to-warm/10" },
-  { id: 7, name: "LED Light Therapy Mask", category: "Tools", price: 189, description: "Professional-grade LED mask with red, blue, and near-infrared wavelengths.", gradient: "from-warm/20 to-lime/10" },
-  { id: 8, name: "Self-Care Starter Kit", category: "Gift Sets", price: 85, description: "Everything a beginner needs: cleanser, serum, moisturizer, and guide book.", gradient: "from-muted/20 to-rose/10" },
+  { id: 1, name: "Neuro-Glow Serum", category: "Serums", price: 68, description: "Neuropeptide-infused vitamin C serum for luminous, youthful skin.", image: "https://eyeamworld.com/cdn/shop/files/98.jpg?v=1756814110&width=600" },
+  { id: 2, name: "Calm Mind Capsules", category: "Supplements", price: 34, description: "Ashwagandha, L-theanine, and magnesium for stress relief and skin clarity.", image: "https://eyeamworld.com/cdn/shop/files/9_ac060b04-fb99-40f5-bdf1-3f384f104cb6.jpg?v=1730368954&width=600" },
+  { id: 3, name: "Jade Gua Sha Set", category: "Tools", price: 42, description: "Premium jade stone gua sha with rose quartz roller for facial sculpting.", image: "https://eyeamworld.com/cdn/shop/files/Crystal-ClearSpot_PigmentationTreatment-1.jpg?v=1724765581&width=600" },
+  { id: 4, name: "The Ritual Gift Box", category: "Gift Sets", price: 125, description: "Our bestselling serum, candle, face mist, and jade roller in a luxury box.", image: "https://eyeamworld.com/cdn/shop/files/eyeam_holiday_sets.png?v=1761637855&width=600" },
+  { id: 5, name: "Retinol Renewal Serum", category: "Serums", price: 78, description: "Encapsulated retinol with bakuchiol for gentle yet powerful skin renewal.", image: "https://eyeamworld.com/cdn/shop/files/No_Baggage_Eye_Serum.jpg?v=1726667164&width=600" },
+  { id: 6, name: "Collagen Beauty Powder", category: "Supplements", price: 45, description: "Marine collagen peptides with hyaluronic acid and biotin for skin, hair, and nails.", image: "https://eyeamworld.com/cdn/shop/files/1_6541917d-1edc-443e-8384-73bac9c60e03.jpg?v=1753891099&width=600" },
+  { id: 7, name: "LED Light Therapy Mask", category: "Tools", price: 189, description: "Professional-grade LED mask with red, blue, and near-infrared wavelengths.", image: "https://eyeamworld.com/cdn/shop/files/119.jpg?v=1761039407&width=600" },
+  { id: 8, name: "Self-Care Starter Kit", category: "Gift Sets", price: 85, description: "Everything a beginner needs: cleanser, serum, moisturizer, and guide book.", image: "https://eyeamworld.com/cdn/shop/files/InMyHealingEraAffirmationCards-1.jpg?v=1724768170&width=600" },
 ];
 
 function ShopContent() {
@@ -85,10 +86,14 @@ function ShopContent() {
                 key={product.id}
                 className="group rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden transition-all hover:border-lime/30 hover:bg-white/[0.04]"
               >
-                <div className={`relative h-40 bg-gradient-to-br ${product.gradient} flex items-center justify-center`}>
-                  <svg className="w-12 h-12 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0" />
-                  </svg>
+                <div className="relative h-52 overflow-hidden bg-white/[0.03]">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
                   <div className="absolute top-3 right-3 rounded-full bg-lime px-2 py-0.5 text-xs font-bold text-black">
                     -{discount}%
                   </div>

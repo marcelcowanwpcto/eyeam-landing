@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -204,6 +205,14 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20">
+        <Image
+          src="https://eyeamworld.com/cdn/shop/files/Eyeam_Product_Campaign_20259092.jpg?v=1749825090&width=2000"
+          alt=""
+          fill
+          className="object-cover opacity-20"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(205,255,0,0.08)_0%,_transparent_70%)]" />
         <div className="relative z-10 mx-auto max-w-5xl text-center">
           <p className="animate-fade-in-up mb-6 text-sm font-medium uppercase tracking-[0.3em] text-lime">
