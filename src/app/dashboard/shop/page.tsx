@@ -2,35 +2,61 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useState, useCallback, Suspense } from "react";
+import ConcernFilter from "../../components/ConcernFilter";
 
 const CATEGORIES = ["All", "Serums", "Supplements", "Tools", "Gift Sets"];
 
 const TIER_DISCOUNTS: Record<string, number> = { essential: 5, premium: 15, vip: 25 };
 
 const PRODUCTS = [
-  { id: 1, name: "Neuro-Glow Serum", category: "Serums", price: 68, description: "Neuropeptide-infused vitamin C serum for luminous, youthful skin.", image: "https://eyeamworld.com/cdn/shop/files/98.jpg?v=1756814110&width=600" },
-  { id: 2, name: "Calm Mind Capsules", category: "Supplements", price: 34, description: "Ashwagandha, L-theanine, and magnesium for stress relief and skin clarity.", image: "https://eyeamworld.com/cdn/shop/files/9_ac060b04-fb99-40f5-bdf1-3f384f104cb6.jpg?v=1730368954&width=600" },
-  { id: 3, name: "Jade Gua Sha Set", category: "Tools", price: 42, description: "Premium jade stone gua sha with rose quartz roller for facial sculpting.", image: "https://eyeamworld.com/cdn/shop/files/Crystal-ClearSpot_PigmentationTreatment-1.jpg?v=1724765581&width=600" },
-  { id: 4, name: "The Ritual Gift Box", category: "Gift Sets", price: 125, description: "Our bestselling serum, candle, face mist, and jade roller in a luxury box.", image: "https://eyeamworld.com/cdn/shop/files/eyeam_holiday_sets.png?v=1761637855&width=600" },
-  { id: 5, name: "Retinol Renewal Serum", category: "Serums", price: 78, description: "Encapsulated retinol with bakuchiol for gentle yet powerful skin renewal.", image: "https://eyeamworld.com/cdn/shop/files/No_Baggage_Eye_Serum.jpg?v=1726667164&width=600" },
-  { id: 6, name: "Collagen Beauty Powder", category: "Supplements", price: 45, description: "Marine collagen peptides with hyaluronic acid and biotin for skin, hair, and nails.", image: "https://eyeamworld.com/cdn/shop/files/1_6541917d-1edc-443e-8384-73bac9c60e03.jpg?v=1753891099&width=600" },
-  { id: 7, name: "LED Light Therapy Mask", category: "Tools", price: 189, description: "Professional-grade LED mask with red, blue, and near-infrared wavelengths.", image: "https://eyeamworld.com/cdn/shop/files/119.jpg?v=1761039407&width=600" },
-  { id: 8, name: "Self-Care Starter Kit", category: "Gift Sets", price: 85, description: "Everything a beginner needs: cleanser, serum, moisturizer, and guide book.", image: "https://eyeamworld.com/cdn/shop/files/InMyHealingEraAffirmationCards-1.jpg?v=1724768170&width=600" },
+  { id: 1, name: "Neuro-Glow Serum", category: "Serums", price: 68, description: "Neuropeptide-infused vitamin C serum for luminous, youthful skin.", image: "https://eyeamworld.com/cdn/shop/files/98.jpg?v=1756814110&width=600", concerns: ["acne", "anti-ageing", "hydration"] },
+  { id: 2, name: "Calm Mind Capsules", category: "Supplements", price: 34, description: "Ashwagandha, L-theanine, and magnesium for stress relief and skin clarity.", image: "https://eyeamworld.com/cdn/shop/files/9_ac060b04-fb99-40f5-bdf1-3f384f104cb6.jpg?v=1730368954&width=600", concerns: ["stress", "hormones", "sleep"] },
+  { id: 3, name: "Jade Gua Sha Set", category: "Tools", price: 42, description: "Premium jade stone gua sha with rose quartz roller for facial sculpting.", image: "https://eyeamworld.com/cdn/shop/files/Crystal-ClearSpot_PigmentationTreatment-1.jpg?v=1724765581&width=600", concerns: ["inflammation", "anti-ageing", "hydration"] },
+  { id: 4, name: "The Ritual Gift Box", category: "Gift Sets", price: 125, description: "Our bestselling serum, candle, face mist, and jade roller in a luxury box.", image: "https://eyeamworld.com/cdn/shop/files/eyeam_holiday_sets.png?v=1761637855&width=600", concerns: ["stress", "hydration", "anti-ageing"] },
+  { id: 5, name: "Retinol Renewal Serum", category: "Serums", price: 78, description: "Encapsulated retinol with bakuchiol for gentle yet powerful skin renewal.", image: "https://eyeamworld.com/cdn/shop/files/No_Baggage_Eye_Serum.jpg?v=1726667164&width=600", concerns: ["acne", "anti-ageing", "hormones"] },
+  { id: 6, name: "Collagen Beauty Powder", category: "Supplements", price: 45, description: "Marine collagen peptides with hyaluronic acid and biotin for skin, hair, and nails.", image: "https://eyeamworld.com/cdn/shop/files/1_6541917d-1edc-443e-8384-73bac9c60e03.jpg?v=1753891099&width=600", concerns: ["anti-ageing", "hydration", "inflammation"] },
+  { id: 7, name: "LED Light Therapy Mask", category: "Tools", price: 189, description: "Professional-grade LED mask with red, blue, and near-infrared wavelengths.", image: "https://eyeamworld.com/cdn/shop/files/119.jpg?v=1761039407&width=600", concerns: ["acne", "inflammation", "anti-ageing"] },
+  { id: 8, name: "Self-Care Starter Kit", category: "Gift Sets", price: 85, description: "Everything a beginner needs: cleanser, serum, moisturizer, and guide book.", image: "https://eyeamworld.com/cdn/shop/files/InMyHealingEraAffirmationCards-1.jpg?v=1724768170&width=600", concerns: ["hydration", "stress", "acne"] },
 ];
 
 function ShopContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const name = searchParams.get("name") || "Demo User";
   const tier = searchParams.get("tier") || "premium";
   const qs = `?name=${encodeURIComponent(name)}&tier=${encodeURIComponent(tier)}`;
   const discount = TIER_DISCOUNTS[tier] || 5;
 
+  const initialConcern = searchParams.get("concern") || "All";
+  const [activeConcern, setActiveConcern] = useState(initialConcern);
   const [category, setCategory] = useState("All");
   const [cartCount, setCartCount] = useState(0);
 
-  const filtered = category === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.category === category);
+  const handleConcernSelect = useCallback((slug: string) => {
+    setActiveConcern(slug);
+    setCategory("All");
+    const params = new URLSearchParams(searchParams.toString());
+    if (slug === "All") {
+      params.delete("concern");
+    } else {
+      params.set("concern", slug);
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [searchParams, router, pathname]);
+
+  // Two-stage filtering: concern first, then category
+  const concernFiltered = activeConcern === "All"
+    ? PRODUCTS
+    : PRODUCTS.filter((p) => p.concerns.includes(activeConcern));
+
+  const availableCategories = ["All", ...Array.from(new Set(concernFiltered.map((p) => p.category)))];
+
+  const filtered = category === "All"
+    ? concernFiltered
+    : concernFiltered.filter((p) => p.category === category);
 
   return (
     <div className="min-h-screen bg-background text-foreground px-6 py-10">
@@ -60,9 +86,15 @@ function ShopContent() {
         </div>
         <p className="mb-8 text-muted">Science-backed skincare, supplements, and wellness tools.</p>
 
-        {/* Filters */}
+        {/* Concern Filters */}
+        <div className="mb-4">
+          <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted">Shop by Concern</p>
+          <ConcernFilter activeConcern={activeConcern} onSelect={handleConcernSelect} />
+        </div>
+
+        {/* Category Filters */}
         <div className="mb-8 flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => (
+          {availableCategories.map((cat) => (
             <button
               key={cat}
               onClick={() => setCategory(cat)}

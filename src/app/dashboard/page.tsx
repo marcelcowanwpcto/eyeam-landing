@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import TierBadge from "../components/TierBadge";
+import { CONCERNS } from "../lib/concerns";
 
 const ACTIONS = [
   {
@@ -111,6 +112,22 @@ function DashboardContent() {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* Shop by Concern */}
+        <div className="mb-12">
+          <h2 className="mb-4 text-lg font-bold">Shop by Concern</h2>
+          <div className="flex flex-wrap gap-2">
+            {CONCERNS.map((concern) => (
+              <Link
+                key={concern.slug}
+                href={`/dashboard/spa${qs}&concern=${concern.slug}`}
+                className="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-muted transition-all hover:border-lime hover:text-lime"
+              >
+                {concern.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Bottom Grid */}

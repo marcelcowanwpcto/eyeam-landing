@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { CONCERNS } from "./lib/concerns";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -288,6 +289,40 @@ export default function Home() {
                   {feature.description}
                 </p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Shop by Concern */}
+      <section className="border-y border-white/10 bg-white/[0.02] px-6 py-24 md:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-20 text-center">
+            <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-lime">
+              Personalised Wellness
+            </p>
+            <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
+              Shop by Concern
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-muted">
+              Whether it&apos;s stress, breakouts, or ageing — find treatments and products
+              tailored to what your skin and body actually need.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {CONCERNS.map((concern) => (
+              <Link
+                key={concern.slug}
+                href="/signup"
+                className="group rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition-all hover:border-lime/30 hover:bg-white/[0.04]"
+              >
+                <h3 className="mb-2 text-lg font-bold group-hover:text-lime transition-colors">
+                  {concern.label}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted">
+                  {concern.description}
+                </p>
+              </Link>
             ))}
           </div>
         </div>
