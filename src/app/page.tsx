@@ -146,8 +146,8 @@ export default function Home() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#" className="text-2xl font-bold tracking-wider">
-            <span className="text-lime">eye</span>am
+          <a href="#" className="block">
+            <img src="/eyeam-logo.svg" alt="eyeam" className="h-8 w-auto" />
           </a>
           <div className="hidden gap-8 md:flex">
             {NAV_LINKS.map((link) => (
@@ -497,9 +497,9 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-12 md:grid-cols-4">
             <div className="md:col-span-1">
-              <p className="mb-4 text-2xl font-bold tracking-wider">
-                <span className="text-lime">eye</span>am
-              </p>
+              <div className="mb-4">
+                <img src="/eyeam-logo.svg" alt="eyeam" className="h-8 w-auto" />
+              </div>
               <p className="text-sm leading-relaxed text-muted">
                 The first in neuro-cosmetics. Science-backed skincare and
                 wellness, developed in London.

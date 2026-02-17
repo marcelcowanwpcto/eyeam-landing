@@ -73,8 +73,8 @@ function MembershipContent() {
     <div className="min-h-screen bg-background text-foreground px-6 py-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 text-center">
-          <Link href="/" className="inline-block text-3xl font-bold tracking-wider mb-8">
-            <span className="text-lime">eye</span>am
+          <Link href="/" className="inline-block mb-8">
+            <img src="/eyeam-logo.svg" alt="eyeam" className="h-10 w-auto" />
           </Link>
           <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-lime">
             Welcome, {name}!

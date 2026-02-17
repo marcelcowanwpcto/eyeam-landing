@@ -23,8 +23,8 @@ export default function DashboardNav() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        <Link href="/" className="text-xl font-bold tracking-wider">
-          <span className="text-lime">eye</span>am
+        <Link href="/" className="block">
+          <img src="/eyeam-logo.svg" alt="eyeam" className="h-7 w-auto" />
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">

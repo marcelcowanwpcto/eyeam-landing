@@ -41,8 +41,8 @@ export default function SignupPage() {
       <div className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
           <div className="mb-10 text-center">
-            <Link href="/" className="inline-block text-3xl font-bold tracking-wider mb-2">
-              <span className="text-lime">eye</span>am
+            <Link href="/" className="inline-block mb-2">
+              <img src="/eyeam-logo.svg" alt="eyeam" className="h-10 w-auto" />
             </Link>
             <p className="text-muted">Create your account to begin your wellness journey</p>
           </div>
