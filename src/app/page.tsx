@@ -246,17 +246,22 @@ export default function Home() {
       </section>
 
       {/* Mantra Bar */}
-      <section className="border-y border-white/10 bg-white/[0.02] py-8">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-8 px-6 text-sm font-medium uppercase tracking-[0.2em] text-muted md:gap-16">
-          <span>I am healed</span>
-          <span className="text-lime">&#x2022;</span>
-          <span>I am enough</span>
-          <span className="text-lime">&#x2022;</span>
-          <span>I am beautiful</span>
-          <span className="text-lime">&#x2022;</span>
-          <span>I am whole</span>
-          <span className="text-lime">&#x2022;</span>
-          <span>I am radiant</span>
+      <section className="border-y border-white/10 bg-white/[0.02] py-8 overflow-hidden">
+        <div className="animate-marquee flex w-max items-center gap-8 text-sm font-medium uppercase tracking-[0.2em] text-muted md:gap-16">
+          {[...Array(2)].map((_, i) => (
+            <div key={i} className="flex items-center gap-8 md:gap-16" aria-hidden={i > 0}>
+              <span>I am healed</span>
+              <span className="text-lime">&bull;</span>
+              <span>I am enough</span>
+              <span className="text-lime">&bull;</span>
+              <span>I am beautiful</span>
+              <span className="text-lime">&bull;</span>
+              <span>I am whole</span>
+              <span className="text-lime">&bull;</span>
+              <span>I am radiant</span>
+              <span className="text-lime">&bull;</span>
+            </div>
+          ))}
         </div>
       </section>
 
